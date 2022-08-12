@@ -15,12 +15,9 @@ steps:
   inputs:
     command: custom
     customCommand: 'install -g @angular/cli@13.2.5'
-    workingDir: YamlTestApp
   displayName: 'Install Angular CLI' 
 
 - task: Npm@1
-  inputs:
-    workingDir: YamlTestApp
   displayName: 'install npm'  
 
 - task: Npm@1
@@ -28,7 +25,6 @@ steps:
     command: custom
     verbose: false
     customCommand: 'run build'
-    workingDir: YamlTestApp
   displayName: 'Build app'
 
 - task: ArchiveFiles@2
