@@ -10,19 +10,16 @@ pool:
 steps:
 - task: NodeTool@0
   inputs:
-    versionSpec: '6.x'
+    versionSpec: '16.x'
   displayName: "Install Node.js"
-- task: Npm@1  
-  inputs:  
-    command: custom
-    verbose: false
-    customCommand: 'install -g @angular/cli'
+
+- script: |
+    npm install -g @angular/cli
   displayName: 'Install Angular CLI'
-- task: Npm@1  
-  inputs:
-    command: custom  
-    customCommand: 'install file:custom-angular-lib.tgz --legacy-peer-deps' 
-  displayName: 'install npm'
+
+- script: |
+    npm install 
+  displayName: 'Install npm'
 
 - task: Npm@1
   inputs: 
