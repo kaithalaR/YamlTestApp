@@ -10,7 +10,7 @@ pool:
 steps:
 - task: NodeTool@0
   inputs:
-    versionSpec: '10.x'
+    versionSpec: '16.x'
   displayName: "Install Node.js"
 - task: Npm@1  
   inputs:  
@@ -29,5 +29,24 @@ steps:
     command: custom  
     verbose: false  
     customCommand: 'run build'
-  displayName: 'Build'
-  
+  displayName: Build
+- task: Cache@2
+  inputs:
+    key: 'npm | "$(Agent.OS)" | package-lock.json'
+    restoreKeys: |
+        npm | "$(Agent.OS)"
+    path: $(npm_config_cache)
+  displayName: Cache npm
+- script: npm clean install 
+
+- task: Npm@1
+  inputs:
+    command: custom
+    customCommand: 'run build'
+  displayName: Build  
+- task : CopyPublishBuildArtifacts@1
+  inputs:  
+        CopyRoot: /dist  
+        Contents: '**'  
+        ArtifactName: angular-web-app 
+        ArtifactType: Container
