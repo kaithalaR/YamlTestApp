@@ -10,37 +10,40 @@ pool:
 steps:
 - task: NodeTool@0
   inputs:
-    versionSpec: '16.x'
+    versionSpec: '6.x'
+    checkLatest: true
   displayName: "Install Node.js"
 
-- script: |
-    npm install -g @angular/cli
-  displayName: 'Install Angular CLI'
-
-- script: |
-    npm install 
-  displayName: 'Install npm'
-
-- script: |
-    npm run build
-  displayName: 'npm build'
-
-- task: CopyFiles@2
+- task: Npm@1
   inputs:
-    sourceFolder: '$(Build.SourcesDirectory)'
-    contents: '*.tgz' 
-    targetFolder: $(Build.ArtifactStagingDirectory)/npm
-  displayName: 'Copy npm package'
+    command: custom
+    customCommand: 'install -g @angular/cli@13.2.5'
+    workingDir: YamlTestApp
+  displayName: 'Install Angular CLI' 
 
-- task: CopyFiles@2
+- task: Npm@1
   inputs:
-    sourceFolder: '$(Build.SourcesDirectory)'
-    contents: 'package.json' 
-    targetFolder: $(Build.ArtifactStagingDirectory)/npm
-  displayName: 'Copy package.json'   
+    workingDir: YamlTestApp
+  displayName: 'install npm'  
 
+- task: Npm@1
+  inputs:
+    command: custom
+    verbose: false
+    customCommand: 'run build'
+    workingDir: YamlTestApp
+  displayName: 'Build app'
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: YamlTestApp/dist/SampleAngularApp
+    replaceExistingArchive: true
+    includeRootFolder: false
+    archiveFile: $(Build.ArtifactStagingDirectory)/dist.zip
+    archiveType: zip
+  displayName: 'Archive app build'  
 - task: PublishPipelineArtifact@1
   inputs:
-    targetPath: '$(Build.ArtifactStagingDirectory)/npm'
-    artifactName: npm
-  displayName: 'Publish npm artifact'
+    artifact: drop
+    targetPath: $(Build.ArtifactStagingDirectory)/dist.zip
+    publishLocation: pipeline
+  displayName: 'Publish artifacts'  
