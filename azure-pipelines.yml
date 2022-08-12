@@ -7,7 +7,7 @@ pool:
 steps:
 - task: NodeTool@0
   inputs:
-    versionSpec: '6.x'
+    versionSpec: '10.x'
     checkLatest: true
   displayName: "Install Node.js"
 
@@ -18,13 +18,16 @@ steps:
   displayName: 'Install Angular CLI' 
 
 - task: Npm@1
-  displayName: 'install npm'  
+  displayName: 'install npm'
+  inputs:
+    workingDir: '$(System.DefaultWorkingDirectory)'  
 
 - task: Npm@1
   inputs:
     command: custom
     verbose: false
     customCommand: 'run build'
+    workingDir: '$(System.DefaultWorkingDirectory)'
   displayName: 'Build app'
 
 - task: ArchiveFiles@2
