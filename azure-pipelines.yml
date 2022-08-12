@@ -14,7 +14,7 @@ steps:
 - task: Npm@1
   inputs:
     command: custom
-    customCommand: 'install -g @angular/cli@'
+    customCommand: 'install -g @angular/cli'
     workingDir: '$(System.DefaultWorkingDirectory)'
   displayName: 'Install Angular CLI' 
 
