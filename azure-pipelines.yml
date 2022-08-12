@@ -21,7 +21,7 @@ steps:
 - task: Npm@1  
   inputs:
     command: custom  
-    customCommand: 'install file:custom-angular-lib.tgz --legacy-peer-deps' 
+    customCommand: 'npm install --legacy-peer-deps' 
   displayName: 'install npm'
 
 - task: Npm@1
