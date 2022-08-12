@@ -21,29 +21,26 @@ steps:
     npm install 
   displayName: 'Install npm'
 
-- task: Npm@1
-  inputs: 
-    command: custom  
-    verbose: false  
-    customCommand: 'run build'
-  displayName: Build
-- task: Cache@2
-  inputs:
-    key: 'npm | "$(Agent.OS)" | package-lock.json'
-    restoreKeys: |
-        npm | "$(Agent.OS)"
-    path: $(npm_config_cache)
-  displayName: Cache npm
-- script: npm clean install 
+- script: |
+    npm run build
+  displayName: 'npm build'
 
-- task: Npm@1
+- task: CopyFiles@2
   inputs:
-    command: custom
-    customCommand: 'run build'
-  displayName: Build  
-- task : CopyPublishBuildArtifacts@1
-  inputs:  
-        CopyRoot: /dist  
-        Contents: '**'  
-        ArtifactName: angular-web-app 
-        ArtifactType: Container
+    sourceFolder: '$(Build.SourcesDirectory)'
+    contents: '*.tgz' 
+    targetFolder: $(Build.ArtifactStagingDirectory)/npm
+  displayName: 'Copy npm package'
+
+- task: CopyFiles@2
+  inputs:
+    sourceFolder: '$(Build.SourcesDirectory)'
+    contents: 'package.json' 
+    targetFolder: $(Build.ArtifactStagingDirectory)/npm
+  displayName: 'Copy package.json'   
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Build.ArtifactStagingDirectory)/npm'
+    artifactName: npm
+  displayName: 'Publish npm artifact'
