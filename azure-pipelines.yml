@@ -1,9 +1,6 @@
 trigger:
 - main
 
-variables:
-  npm_config_cache: $(Pipeline.Workspace)/.npm
-
 pool:
   vmImage: windows-latest
 
@@ -33,14 +30,16 @@ steps:
     customCommand: 'run build'
     workingDir: YamlTestApp
   displayName: 'Build app'
+
 - task: ArchiveFiles@2
   inputs:
-    rootFolderOrFile: YamlTestApp/dist/SampleAngularApp
+    rootFolderOrFile: '/dist/SampleAngularApp'
+    includeRootFolder: true
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/dist.zip'
     replaceExistingArchive: true
-    includeRootFolder: false
-    archiveFile: $(Build.ArtifactStagingDirectory)/dist.zip
-    archiveType: zip
   displayName: 'Archive app build'  
+  
 - task: PublishPipelineArtifact@1
   inputs:
     artifact: drop
