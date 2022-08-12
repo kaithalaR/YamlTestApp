@@ -12,22 +12,23 @@ steps:
   displayName: "Install Node.js"
 
 - task: Npm@1
+  displayName: 'install npm'
+  inputs:
+    workingDir: $(System.DefaultWorkingDirectory)
+
+- task: Npm@1
   inputs:
     command: custom
     customCommand: 'install -g @angular/cli'
-    workingDir: '$(System.DefaultWorkingDirectory)'
+    workingDir: $(System.DefaultWorkingDirectory)
   displayName: 'Install Angular CLI' 
 
-- task: Npm@1
-  displayName: 'install npm'
-  inputs:
-    workingDir: '$(System.DefaultWorkingDirectory)' 
 - task: Npm@1
   inputs:
     command: custom
     verbose: false
     customCommand: 'run build'
-    workingDir: '$(System.DefaultWorkingDirectory)'
+    workingDir: $(System.DefaultWorkingDirectory)
   displayName: 'Build app'
 
 - task: ArchiveFiles@2
