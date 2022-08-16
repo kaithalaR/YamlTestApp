@@ -7,21 +7,22 @@ pool:
 steps:
 - task: NodeTool@0
   inputs:
-    versionSpec: '10.x'
-    checkLatest: true
-  displayName: "Install Node.js"
+    versionSpec: '12.x'
+  displayName: "Install Node.js 12.x"
+
+- task: Npm@1
+  inputs:
+    command: custom
+    customCommand: 'install @angular/cli@7.3.1'
+    workingDir: $(System.DefaultWorkingDirectory)
+    verbose: false
+  displayName: 'Install Angular CLI' 
 
 - task: Npm@1
   displayName: 'install npm'
   inputs:
     workingDir: $(System.DefaultWorkingDirectory)
-
-- task: Npm@1
-  inputs:
-    command: custom
-    customCommand: 'install -g @angular/cli'
-    workingDir: $(System.DefaultWorkingDirectory)
-  displayName: 'Install Angular CLI' 
+    verbose: false
 
 - task: Npm@1
   inputs:
