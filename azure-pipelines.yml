@@ -23,7 +23,7 @@ steps:
   inputs:
     workingDir: $(System.DefaultWorkingDirectory)
     verbose: false
-  
+
 - task: Npm@1
   displayName: build
   inputs:
