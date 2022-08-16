@@ -23,27 +23,24 @@ steps:
   inputs:
     workingDir: $(System.DefaultWorkingDirectory)
     verbose: false
-
+  
 - task: Npm@1
+  displayName: build
   inputs:
     command: custom
     verbose: false
     customCommand: 'run build'
     workingDir: $(System.DefaultWorkingDirectory)
-  displayName: 'Build app'
 
-- task: ArchiveFiles@2
-  inputs:
-    rootFolderOrFile: '/dist/SampleAngularApp'
-    includeRootFolder: true
-    archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/dist.zip'
-    replaceExistingArchive: true
-  displayName: 'Archive app build'  
+- task: CopyPublishBuildArtifacts@1  
+  displayName: 'Copy Publish Artifact: test'  
+  inputs:  
+    CopyRoot: dist  
+    Contents: '**'  
+    ArtifactName: test  
+    ArtifactType: Container  
   
-- task: PublishPipelineArtifact@1
-  inputs:
-    artifact: drop
-    targetPath: $(Build.ArtifactStagingDirectory)/dist.zip
-    publishLocation: pipeline
-  displayName: 'Publish artifacts'  
+- task: DownloadPipelineArtifact@2  
+  displayName: 'Download Pipeline Artifact'  
+  inputs:  
+    targetPath: ' $(Build.ArtifactStagingDirectory)/dist/AngularTest'  
