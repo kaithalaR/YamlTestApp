@@ -29,7 +29,7 @@ steps:
   inputs:
     command: custom
     verbose: false
-    customCommand: 'run build'
+    customCommand: 'npm run build'
     workingDir: $(System.DefaultWorkingDirectory)
 
 - task: CopyPublishBuildArtifacts@1  
