@@ -12,6 +12,7 @@
     "test": "ng test --code-coverage --no-watch",
     "test:app:watch": "ng test angularexampleapp --code-coverage --watch=true",
     "test:library:watch": "ng test ngx-example-library --code-coverage --watch=true",
+    "build": "ng build",
     "build:prod": "ng build --configuration production",
     "build:library": "ng build --configuration=production ngx-example-library",
     "ci": "npm run lint && npm run test && npm run e2e && npm run build:prod",
